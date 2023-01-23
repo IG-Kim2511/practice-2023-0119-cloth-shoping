@@ -22,25 +22,23 @@ function renderProducts() {
     products.forEach(p_product => {
         productsEl.innerHTML +=`
    
-            <div class="item">
-                    <div class="item-container">
-                        <div class="item-img">
-                            <img src="./img/Clothing-Fill-Color(1).png" alt="">
-
-                        </div>
-                        <div class="desc">
-                            <h2>product.name</h2>
-                            <h2><small>$</small>product.price</h2>
-                            <p>product.description</p>
-                        </div>
-                        <div class="add-to-wishlist">
-                            <img src="./icons/heart.png" alt="">
-                        </div>
-                        <div class="add-to-cart">
-                            <img src="./icons/bag-plus.png" alt="">
-                        </div>
-                    </div>
-                </div>
+        <div class="item">
+        <div class="item-container">
+            <div class="item-img">
+                <img src="${p_product.imgSrc}" alt="${p_product.name}">
+            </div>
+            <div class="desc">
+                <h2>${p_product.name}</h2>
+                <h2><small>$</small>${p_product.price}</h2>
+                <p>
+                    ${p_product.description}
+                </p>
+            </div>              
+            <div class="add-to-cart" onclick="addToCart(${p_product.id})">
+                <img src="./icons/bag-plus.png" alt="add to cart">
+            </div>
+        </div>
+    </div>
         
         `
         
@@ -70,3 +68,33 @@ changenumberofunits
 array.some
 render cart items
 */
+
+
+function addToCart(p_id) {
+
+    if (cart.some(pp_item=>pp_item.id === p_id)) {
+        // changeNumberOfUnits('plus',p_id)
+        
+    } else {
+        const item = products.find(product=> product.id ===p_id)
+        cart.push(
+            {
+                ...item,
+                numberOfUnits:1,
+            }
+        );
+    }
+    console.log(cart)
+    updateCart();
+    
+}
+
+// addToCart();
+
+function updateCart() {
+    // renderCartItems();
+    // rendersubtotal();
+
+    localStorage.setItem('CART',JSON.stringify(cart));
+}
+updateCart();
