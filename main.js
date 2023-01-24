@@ -73,7 +73,7 @@ render cart items
 function addToCart(p_id) {
 
     if (cart.some(pp_item=>pp_item.id === p_id)) {
-        // changeNumberOfUnits('plus',p_id)
+        changeNumberOfUnits('plus',p_id)
         
     } else {
         const item = products.find(product=> product.id ===p_id)
@@ -92,8 +92,8 @@ function addToCart(p_id) {
 // addToCart();
 
 function updateCart() {
-    // renderCartItems();
-    // rendersubtotal();
+    renderCartItems();
+    rendersubtotal();
 
     localStorage.setItem('CART',JSON.stringify(cart));
 }
@@ -147,5 +147,89 @@ return
 */
 
 function changeNumberOfUnits(action, id) {
+    cart = cart.map((item)=>{
+
+        let numberOfUnits = item.numberOfUnits;
+
+        if (item.id ===id) {
+
+            if (action === 'minus' && numberOfUnits > 1) {
+
+                numberOfUnits --;
+            } else if (action ==='plus' && numberOfUnits < item.instock) {
+                
+                numberOfUnits ++;
+            }
+        }
+
+
+        // js 28
+        return{
+            ...item,
+            numberOfUnits:numberOfUnits,
+        }
+    });
+
+    updateCart();
+}
+
+// js35 calculate, render subtotal
+
+/* 
+
+calculate
+
+10 price
+20 number of units
+30 price * number of u nits
+*/
+
+function renderSubtotal() {
+    let totalPrice = 0;
+    let totalItems = 0;
+
+    cart.forEach(pp_item=>{
+        totalPrice+= pp_item.price* pp_item.numberOfUnits;
+        totalItems+= pp_item.numberOfUnits;
+    });
+
+    subtotalEl.innerHTML =`subtotal(${totalItems} items) : $ ${totalPrice.toFixed(2)}`;
+    totalItemsInCartEl.innerHTML = totalItems;
     
 }
+
+// js41. remove item from cart
+/* 
+5 remove item , new  object array
+10 render html, onclick remove item from cart();
+filter
+filster, cart array
+
+
+*/
+
+// array.filter
+
+function removeItemFromCart([p_id]) {
+    
+    cart = cart.filter(pp_item=>pp_item.id !==p_id);
+    updateCart();
+}
+
+// localstorage.clear , location.reload());
+
+const deleteAllBtn = document.querySelector('.delete-all-btn');
+const checkBtn = document.querySelector('.checkoutBtn');
+
+deleteAllBtn.addEventListener('click',()=>{
+    localStorage.clear();
+
+    location.reload();
+});
+
+checkoutBtn.addEventListener('click',()=>{
+    localStorage.clear();
+    location.reload();
+
+    alert('thank you');
+});
