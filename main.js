@@ -98,3 +98,54 @@ function updateCart() {
     localStorage.setItem('CART',JSON.stringify(cart));
 }
 updateCart();
+
+// render cart items
+// onclick change number of units, 
+// onclick kremove item from cart
+
+function renderCartItems() {
+    cartItemsEl.innerHTML="";
+    cart.forEach(pp_item => {
+        cartItemsEl.innerHTML += `
+        <div class="cart-item">
+            <div class="item-info" onclick="removeItemFromCart(${pp_item.id})">
+                <img src="${pp_item.imgSrc}" alt="${pp_item.name}">
+                <h4>${pp_item.name}</h4>
+            </div>
+            <div class="unit-price">
+                <small>$</small>${pp_item.price}
+                <img src="./img/icons8-delete-128.png" alt="" class="delete"  onclick="removeItemFromCart(${pp_item.id})">
+            </div>
+            <div class="units">
+                <div class="btn plus" onclick="changeNumberOfUnits('plus', ${pp_item.id})">+</div>           
+                <div class="number">${pp_item.numberOfUnits}</div>
+                <div class="btn minus" onclick="changeNumberOfUnits('minus', ${pp_item.id})">-</div>
+            </div>
+        </div>
+    `
+        
+    });
+    
+}
+
+// js28 change number of ounits
+
+/* 
+
+return
+action, id
+
+10 cart 안의 item.id === conclikc으로 넘어온 id
+minus + 1
+plus + instock
+
+item.id != onclic id
+return
+
+
+
+*/
+
+function changeNumberOfUnits(action, id) {
+    
+}
